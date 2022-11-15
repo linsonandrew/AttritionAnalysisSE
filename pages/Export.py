@@ -59,7 +59,7 @@ else:
 
     st.title("Images you can use")
 
-    d= {"atrributes vs left":"This is a default desc","DEPARTMENTS VS LEFT":"THis is another default"}
+    d = {"Employees Left vs Employees not Left" : "Graph depicting  count of Employees Left vs not Left","Number of Projects Per Employee":"","DEPARTMENTS VS LEFT":"Relationship between Departmants and count of employees who leave ","atrributes vs left":"attributes vs Employees who leave "}
 
     temp = [str(i) for i in d.keys()]
     tabs_list = st.tabs(temp)
@@ -71,7 +71,7 @@ else:
 
             img = Image.open(str(list(d.keys())[i])+".png")
             if img.size[1]>500:
-                x = 650 / img.size[0]
+                x = 900 / img.size[0]
                 img = img.resize((int(img.size[0]*x),(int(img.size[1]*x))))
 
             st.subheader(d[str(list(d.keys())[i])])
