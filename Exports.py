@@ -59,13 +59,21 @@ else:
 
     st.title("Images you can use")
 
-    num_of_files=7
-    temp = [str(i) for i in range(num_of_files)]
+    d= {"atrributes vs left":"This is a default desc","DEPARTMENTS VS LEFT":"THis is another default"}
+
+    temp = [str(i) for i in d.keys()]
     tabs_list = st.tabs(temp)
 
-    for i in range(num_of_files):
-
+    for i in range(len(tabs_list)):
+        
         with tabs_list[i]:
             
-            img = Image.open(str(i)+".png")
+
+            img = Image.open(str(list(d.keys())[i])+".png")
+            if img.size[1]>500:
+                x = 650 / img.size[0]
+                img = img.resize((int(img.size[0]*x),(int(img.size[1]*x))))
+
+            st.subheader(d[str(list(d.keys())[i])])
             st.image(img)
+            
