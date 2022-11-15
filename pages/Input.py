@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from logist import mega
+import time
 
 st.set_page_config(
     page_title="Attrition Solver",
@@ -100,18 +101,34 @@ else:
 
     if a:
 
-        data1 = pd.read_csv(r'HR_Dataset.xls')
-        print("MODEL ONCE                            OMG BRO")
-        
-        #Animation options
-        #https://lottiefiles.com/82707-finish-tick-animation
-        #https://lottiefiles.com/95088-success
-        
-        with st.spinner("The model is running"):
+        if st.session_state['model'] == 'Yes':
+            st.error("Please reinput the data.")
 
-            st.session_state['model_res'] = mega(st.session_state['model_res'])
-        
-        st.success("Model 1 has finished")
+        else:
+            data1 = pd.read_csv(r'HR_Dataset.xls')
+            print("MODEL ONCE                            OMG BRO")
+            
+            #Animation options
+            #https://lottiefiles.com/82707-finish-tick-animation
+            #https://lottiefiles.com/95088-success
+            
+            with st.spinner("Model 1 is running"):
 
-        st.session_state['model'] = 'Yes'
+                st.session_state['model_res'] = mega(st.session_state['model_res'])
+            
+            st.success("Model 1 has finished")
+
+            with st.spinner("Model 2 is running"):
+                
+                time.sleep(8)
+
+            st.success("Model 2 has finished")
+
+            with st.spinner("Model 3 is running"):
+                
+                time.sleep(4)    
+
+            st.success("Model 3 has finished")
+            
+            st.session_state['model'] = 'Yes'
 

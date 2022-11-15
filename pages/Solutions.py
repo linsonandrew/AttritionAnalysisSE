@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from PIL import Image
 
 st.set_page_config(
     page_title="Attrition Solver",
@@ -45,6 +44,9 @@ if 'login_test' not in st.session_state:
 
 if 'model' not in st.session_state:
     st.session_state['model'] = 'No'
+
+if 'model' not in st.session_state:
+    st.session_state['model'] = 'No'
     
 
 if st.session_state['login'] == 'No':
@@ -57,15 +59,13 @@ elif st.session_state['model'] == 'No':
 
 else:
 
-    st.title("Images you can use")
+    st.title("Selected solutions")
 
-    num_of_files=7
-    temp = [str(i) for i in range(num_of_files)]
-    tabs_list = st.tabs(temp)
+    dict_temp = st.session_state['page']
 
-    for i in range(num_of_files):
-
-        with tabs_list[i]:
-            
-            img = Image.open(str(i)+".png")
-            st.image(img)
+    for i in dict_temp:
+    
+        with st.expander(str(i)):
+    
+            for j in dict_temp[i]:
+                st.write(j)
