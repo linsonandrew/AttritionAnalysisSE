@@ -55,81 +55,105 @@ elif st.session_state['model'] == 'No':
 
 else:
 
-    st.title("Name: Lorem Ipsum")
-
-    a = random.randint(1,5)
-    col1,col2 = st.columns(2)
-    mapping =  {1:["Intense Workload","Lessen the workload"],
-            2:["No clear Understanding and weak ManagerRelationship","Training Enhancement"],
-            3:["Less Projects than Usual","Urgent Couselling and Affirmation of value forEmployee to be shown"],
-            4:["Project Workload","Balancing of Projects by reducing the number of projects in accordance to the number of work hours"],
-            5:["Working for long hours","Insentives ++"],
-            6:["Recently entering the seniority zone with more projects","More Mentoring"]
-    }
-
-    img = Image.open(str(a)+".jpg")
     c = st.container()
     
     with c:
         
-        temp_dict=st.session_state['page']
+        if st.session_state['inp'] == 'default':
+            st.title("Choose an employee in home page")
 
-        with col1:
-    
-            st.image(img)
-            
-            df_t = st.session_state['model_res'][st.session_state['model_res']['Emp_ID'] == st.session_state['inp']]
-            
-            st.metric("Customer Satifaction" , str(int(df_t['satisfaction_level']*100))+"%")
-            st.metric("Last Evaluation" , str(int(df_t['last_evaluation']*100))+"%")
-            st.write("Number of projects: "+str(int(df_t['number_project'])))
-            st.write("Hours per month: "+str(int(df_t['average_montly_hours'])))
-            st.write("Years with your company: "+str(int(df_t['time_spend_company'])))
-            st.write("Recent promotion: "+str("Yes" if int(df_t['promotion_last_5years']) == 1 else "No"))
-            st.write("Department: "+str(int(df_t['Departments '])))
-            st.write("Salary: "+str(int(df_t['salary'])))
+        else:
+            st.title("Employee No: "+str(st.session_state['inp']))
+            st.title("Name: Lorem Ipsum")
 
-        with col2:
+            col1,col2 = c.columns(2)
+            mapping =  {1:["Intense Workload","Lessen the workload"],
+                    2:["No clear Understanding and weak ManagerRelationship","Training Enhancement"],
+                    3:["Less Projects than Usual","Urgent Couselling and Affirmation of value forEmployee to be shown"],
+                    4:["Project Workload","Balancing of Projects by reducing the number of projects in accordance to the number of work hours"],
+                    5:["Working for long hours","Insentives ++"],
+                    6:["Recently entering the seniority zone with more projects","More Mentoring"]
+            }
+            a = st.session_state['inp']%5
+            a = a + 1
+            img = Image.open(str(a)+".jpg")
 
-            df = st.session_state['model_res']
+            temp_dict=st.session_state['page']
 
-            for index, row in df.iterrows():
+            with col1:
+        
+                st.image(img)
+                
+                df_t = st.session_state['model_res'][st.session_state['model_res']['Emp_ID'] == st.session_state['inp']]
+                
+                st.metric("Customer Satifaction" , str(int(df_t['satisfaction_level']*100))+"%")
+                st.metric("Last Evaluation" , str(int(df_t['last_evaluation']*100))+"%")
+                st.write("Number of projects: "+str(int(df_t['number_project'])))
+                st.write("Hours per month: "+str(int(df_t['average_montly_hours'])))
+                st.write("Years with your company: "+str(int(df_t['time_spend_company'])))
+                st.write("Recent promotion: "+str("Yes" if int(df_t['promotion_last_5years']) == 1 else "No"))
 
-                if row["Emp_ID"] == st.session_state['inp']:
+                a = list(str(df_t['Departments ']).split())
+                st.write("Department: "+a[1])
+                a = list(str(df_t['salary']).split())
+                st.write("Salary: "+a[1])
 
-                    stri="Odds: "+str(int((row['odds'])*100))+"%"
-                    st.subheader(stri)
-                    st.subheader("Reasons:")
-                    lst=[]
+            with col2:
 
-                    for i in row['reason']:
+                df = st.session_state['model_res']
 
-                        lst.append(mapping[i][0])
+                for index, row in df.iterrows():
 
-                    for i in lst:
+                    if row["Emp_ID"] == st.session_state['inp']:
 
-                        st.markdown("* " + i)
+                        stri="Odds: "+str(int((row['odds'])*100))+"%"
+                        st.subheader(stri)
+                        st.subheader("Reasons:")
+                        lst=[]
 
-                    st.subheader("Solutions:")
-                    lst2=[]
+                        for i in row['reason']:
 
-                    for i in row['reason']:
+                            lst.append(mapping[i][0])
 
-                        lst2.append(mapping[i][1])
+                        for i in lst:
 
-                    for i in lst2:
+                            st.markdown("* " + i)
 
-                        a = st.checkbox(str(i),key=str(i))
+                        st.subheader("Solutions:")
+                        lst2=[]
 
-                        if a:
+                        for i in row['reason']:
+
+                            lst2.append(mapping[i][1])
+
+                        for i in lst2:
                             
-                            if row["Emp_ID"] not in temp_dict.keys():
+                            if row["Emp_ID"] in temp_dict.keys():
 
-                                temp_dict[row["Emp_ID"]]=[str(i)]
+                                if str(i) in temp_dict[row["Emp_ID"]]:
+                                
+                                    a = st.checkbox(str(i),value= True, key=str(i))
+                            
+                                else:
+                                
+                                    a = st.checkbox(str(i),value= False, key=str(i))
+                            
+                            if a:
+                                
+                                if row["Emp_ID"] not in temp_dict.keys():
+
+                                    temp_dict[row["Emp_ID"]]=[str(i)]
+                                
+                                else:
+                                    
+                                    if str(i) not in temp_dict[row["Emp_ID"]]:
+                                        temp_dict[row["Emp_ID"]].append(str(i))
                             
                             else:
-                                
-                                if str(i) not in temp_dict[row["Emp_ID"]]:
-                                    temp_dict[row["Emp_ID"]].append(str(i))
-    
-    st.session_state['page'] = temp_dict
+                                if row["Emp_ID"] in temp_dict.keys():
+                                    if str(i) in temp_dict[row["Emp_ID"]]:
+
+                                        temp_dict[row["Emp_ID"]].remove(str(i))
+
+        
+            st.session_state['page'] = temp_dict
