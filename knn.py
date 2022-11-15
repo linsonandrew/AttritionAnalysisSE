@@ -147,6 +147,9 @@ def mega(data):
 
     plt.show()
     fig0.savefig('lin0.png', dpi=100)
+
+    sns.set(style = 'whitegrid')
+    sns.stripplot(x="satisfaction_level", y="last_evaluation", hue="left")
     
     
 
