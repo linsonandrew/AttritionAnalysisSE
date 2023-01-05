@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-#UWU
+#UWUu
 
 st.set_page_config(
     page_title="Attrition Solver",
