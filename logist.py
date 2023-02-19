@@ -251,8 +251,7 @@ def mega(data):
 
     # impLeftData = data_new.loc[:,['Emp_ID','odds','reason']]
 
-    impLeftData= data_new.tail(3750)
-
+    impLeftData= data_new
     
 
 
@@ -340,7 +339,7 @@ def mega(data):
     # plt.show()
     fig1.savefig('Number of Projects Per Employee.png', dpi=100)
 
-    df2 = pd.read_csv("2.csv")
+    df2 = data_new
     impLeftData["odds"] = df2["odds"].tolist()
 
     impLeftData['salary'].replace(0,'low',inplace=True)
